@@ -1,0 +1,90 @@
+\documentclass{thesis}
+%\usepackage[colorlinks, urlcolor=blue, linkcolor=red, citecolor=red, linktocpage=true]{hyperref}
+\usepackage[linktocpage=true]{hyperref}
+\usepackage{russianplural}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{totcount}
+\usepackage{mdwlist}
+\usepackage{makecell}
+\usepackage{booktabs}
+\usepackage{hyperref}
+%\usepackage{showframe}
+\usepackage{setspace}
+\usepackage{caption}
+\usepackage{titlesec}
+% \usepackage{float}
+\usepackage{listings}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\newcommand{\head}[1]{\textnormal{\textbf{#1}}}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+\makeatletter
+\newbox\sf@box
+\newenvironment{SubFloat}[2][]%
+{\def\sf@one{#1}%
+	\def\sf@two{#2}%
+	\setbox\sf@box\hbox
+	\bgroup}%
+{ \egroup
+	\ifx\@empty\sf@two\@empty\relax
+	\def\sf@two{\@empty}
+	\fi
+	\ifx\@empty\sf@one\@empty\relax
+	\subfloat[\sf@two]{\box\sf@box}%
+	\else
+	\subfloat[\sf@one][\sf@two]{\box\sf@box}%
+	\fi}
+\makeatother
+
+% \usepackage{showframe}
+
+\newtotcounter{bibitems}
+\setcounter{bibitems}{0}
+
+\captionsetup[subfloat]{farskip=0pt}
+% \setlength{\farskip}{0pt}
+% \setlength{\textfloatsep}{18pt}
+
+% \setlength{\intextsep}{0pt}
+
+% \setlength{\belowcaptionskip}{-0.5em}
+
+\graphicspath{{pic/}, {pseudocode/}}
+\titlespacing{\paragraph}{1.25cm}{1.5em plus .1ex minus .2ex}{1em}
+\captionsetup[table]{skip=-0.4em}
+\begin{document} % ------------------------------------------------------------
+\sloppy
+
+\input{title.tex} % титульный лист
+
+% \thispagestyle{empty}
+\setcounter{page}{2}
+\input{task.tex}
+
+\newpage
+%{\linespread{1.1}
+\tableofcontents % оглавление
+%}
+
+\input{intro.tex}
+\input{background.tex}
+\input{designing.tex}
+\input{realisation.tex}
+\input{experiments.tex}
+\input{conclusion.tex}
+
+\newpage
+{\raggedright
+\phantomsection\addcontentsline{toc}{section}{\refname}
+\bibliographystyle{ugost2008}
+\bibliography{thesis}
+}
+% \printbibliography[env=gostbibliography, sorting=ntvy]
+
+\end{document}
+
+% vim: set tw=72 syntax=tex:
