@@ -1,0 +1,69 @@
+%
+% ----------------------------------------------------------------------------
+% Constantin S. Pan <kvapen@gmail.com> wrote this file. As long as you retain
+% this notice you can do whatever you want with this stuff. If we meet some
+% day, and you think this stuff is worth it, you can buy me a can of Coke in
+% return.
+% 	Constantin S. Pan
+% ----------------------------------------------------------------------------
+%
+
+\ProvidesPackage{russianplural}
+
+\newcommand{\remainderinto}[3]{%
+	\begingroup%
+	\newcount\rem%
+	\rem=#1\relax%
+	\divide\rem by #2\relax%
+	\multiply\rem by #2\relax%
+	\newcount\remm%
+	\remm=#1\relax%
+	\advance\remm by -\number\rem\relax%
+	\xdef#3{\the\remm}%
+	\endgroup%
+}
+\newcommand{\divideinto}[3]{%
+	\begingroup%
+	\newcount\result%
+	\result=#1\relax%
+	\divide\result by #2\relax%
+	\xdef#3{\the\result}%
+	\endgroup%
+}
+
+% Declinates a noun into correct (according to russian norms) plural form
+% for the number given.
+% Usage: \pluralform{number}{form0}{form1}{form4}
+% 	form0 - plural form for 0, 5, 1006, ... objects
+% 	form1 - plural form for 1, 21, 1001 ... objects
+% 	form4 - plural form for 2, 3, 23, 1004 ... objects
+\newcommand{\pluralform}[4]{%
+	\begingroup%
+	\remainderinto{#1}{100}{\cents}%
+	\divideinto{\cents}{10}{\decs}%
+	\remainderinto{#1}{10}{\ones}%
+	\ifnum \decs=1\relax%
+		#2% 12 предметов
+	\else%
+		\ifnum \ones=1\relax%
+			#3% 1 предмет
+		\else%
+			\ifnum \ones>1\relax%
+				\ifnum \ones<5\relax%
+					#4% 2-4 предмета
+				\else\relax%
+					#2% 5 предметов
+				\fi%
+			\else\relax%
+				#2% 0 предметов
+			\fi%
+		\fi%
+	\fi%
+	\endgroup%
+}
+
+% The same as above, but also outputs the number itself
+\newcommand{\numplural}[4]{%
+	#1 \pluralform{#1}{#2}{#3}{#4}%
+}
+
