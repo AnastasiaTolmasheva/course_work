@@ -12,21 +12,19 @@ threshold = 6
 email_similarity = 6
 
 
-def create_features_database(table_filename):
+def create_features_database(table_name):
     """
     Создание базы данных с характеристиками на основе данных из исходной таблицы
 
     На входе:
-    - table_filename: Имя таблицы с исходными данными
+    - table_name: имя таблицы с исходными данными
     """
     # Соединение с исходной базой данных
     connection = sqlite3.connect('app_database.db')
 
     # Чтение данных из исходной таблицы
-    query = f"SELECT * FROM {table_filename};"
+    query = f"SELECT * FROM {table_name};"
     data = pd.read_sql_query(query, connection)
-
-    # Прекращение соединения с исходной базой данных
     connection.close()
 
     # Вычисление необходимых характеристик
@@ -40,7 +38,7 @@ def create_features_database(table_filename):
     # date_registered - дата регистрации, преобразованная в формат целых чисел типа int64
     # date_last_login - дата последнего входа, преобразованная в формат целых чисел типа int64
     # matching_dates - сравниваются даты регистрации и последнего входа. Если они совпадают - ставится 1, иначе - 0
-    # fake - размеченная колонка, содержащая 1 или 0 (1 - аккаунт фейк, 0 - настоящий)
+    # is_fake - размеченная колонка, содержащая 1 или 0 (1 - аккаунт фейк, 0 - настоящий)
 
     data['username_length'] = data['username'].str.len()
     data['numbers_in_name'] = data['username'].str.contains(r'\d').astype(int)
@@ -53,16 +51,16 @@ def create_features_database(table_filename):
     data['date_last_login'] = pd.to_datetime(data['date_last_login']).astype('int64')
     data['matching_dates'] = (pd.to_datetime(data['date_last_login']).dt.round('s') == pd.to_datetime(data['date_registered']).dt.round('s'))
     data['matching_dates'] = data['matching_dates'].astype(int)
-    data['fake'] = data['fake'].astype(int)
+    data['is_fake'] = data['is_fake'].astype(int)
 
 
     def find_neighbours(column_name, radius):
         """
-        Находит соседей в радиусе для каждой строки по столбцу
+        Находит соседей в радиусе для каждой строки по определенному столбцу
 
         На входе:
-        - column_name: Название столбца для поиска соседей
-        - radius: Радиус поиска
+        - column_name: название столбца для поиска соседей
+        - radius: радиус поиска
 
         На выходе:
         - neighbours_above: список соседей сверху
@@ -107,7 +105,7 @@ def create_features_database(table_filename):
 
     # Создание таблицы с вычесленными признаками
     create_features_table_query = f"""
-    CREATE TABLE IF NOT EXISTS {table_filename} (
+    CREATE TABLE IF NOT EXISTS {table_name} (
         user_id INTEGER,
         username_length INTEGER,
         numbers_in_name INTEGER,
@@ -123,7 +121,7 @@ def create_features_database(table_filename):
         username_neighbour_below INTEGER,
         email_neighbour_above INTEGER,
         email_neighbour_below INTEGER,
-        fake INTEGER
+        is_fake INTEGER
     );
     """
     new_connection.execute(create_features_table_query)
@@ -131,7 +129,7 @@ def create_features_database(table_filename):
     # Запись вычисленных характеристик в таблицу
     data[['user_id', 'username_length', 'numbers_in_name', 'email_length', 'matching_names',
           'pattern_email', 'country', 'date_last_email', 'date_registered', 'date_last_login', 'matching_dates',
-          'username_neighbour_above', 'username_neighbour_below', 'email_neighbour_above', 'email_neighbour_below', 'fake']].to_sql(f'{table_filename}', new_connection, if_exists='replace', index=False)
+          'username_neighbour_above', 'username_neighbour_below', 'email_neighbour_above', 'email_neighbour_below', 'is_fake']].to_sql(f'{table_name}', new_connection, if_exists='replace', index=False)
 
     # Прекращение соединения с новой базой данных
     new_connection.close()
