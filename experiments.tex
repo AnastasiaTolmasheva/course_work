@@ -1,263 +1,365 @@
 \newpage
 \section{Тестирование}
 \label{sec:Experiments}
+\subsection{Функциональное тестирование}
+\label{subsec:Algoritm}
+В ходе тестирования проверялось соответствие приложения функциональным требованиям. В таблице~\ref{table:funcTest} приведен протокол ручного тестирования основных аспектов работы приложения.
+
+\begin{table}[H]
+    \caption{Функциональное тестирование системы}
+    \vspace{1em}
+    \small
+    \setstretch{1.0}
+    \begin{tabular}{|l|p{3cm}|p{5.7cm}|p{2.3cm}|p{2.3cm}|}
+    \hline
+    \multicolumn{1}{|c|}{\textbf{№}} &
+      \multicolumn{1}{p{3cm}|}{\centering \textbf{Название теста}} &
+      \multicolumn{1}{p{5.7cm}|}{\centering \textbf{Действие}} &
+      \multicolumn{1}{p{2.3cm}|}{\centering \textbf{Ожидаемый результат}} &
+      \multicolumn{1}{p{2.3cm}|}{\centering \textbf{Тест пройден?}} \\ \hline
+    1  & Загрузка~данных~в~систему. & В главном окне выбрать кнопку <<Загрузить данные>>, выбрать csv файл. & Файл загружен в базу данных. & Да \\ \hline
+    2  & Добавление строки~в~датасет. & В главном окне выбрать кнопку <<Отредактировать данные>>, выбрать таблицу в выпадающем списке нажать на кнопку <<Добавить строку>>. & Строка добавлена. & Да \\ \hline
+    3  & Удаление строки~из~датасета. & В окне редактирования данных выбрать строку, нажать на кнопку <<Удалить строку>>. & Строка удалена из таблицы. & Да \\ \hline
+    4  & Добавление столбца~в~датасет. & В окне редактирования данных нажать на кнопку <<Добавить столбец>>, написать его название в всплывающем окне. & Столбец добавлен в таблицу. & Да \\ \hline
+    5  & Удаление~столбца~из~датасета. & В окне редактирования данных нажать на кнопку <<Удалить столбец>>, написать его название в всплывающем окне. & Столбец удален из таблицы. & Да \\ \hline
+    6  & Редактирование значения ячейки. & В окне редактирования данных два раза кликнуть на ячейку, в всплывающем окне изменить ее значение, применить его. & Значение ячеки изменено. & Да \\ \hline
+    7  & Попытка сохранения данных без выбора таблицы. & В окне редактирования нажать кнопку <<Сохранить>>, без выбранной таблицы для редактирования. & Отображение всплывающего окна с предупреждением. & Да \\ \hline
+    8  & Проверка работоспособности окна~настроек. & В главном окне выбрать <<Найти фейки>>, в выпадающих списках настроить алгоритм, нажать кнопку <<Найти>>. & Запускается процесс поиска <<фейков>>. & Да \\ \hline
+    9 & Проверка ввода неполных данных. & В окне настроек не выбрать папку, не выбрать данные, нажать кнопку <<Найти>>. & Отображение всплывающего окна с предупреждением. & Да \\ \hline
+    \end{tabular}
+    \label{table:funcTest}
+\end{table}
+\vspace{1.5em} 
+
 
 \subsection{Сравнение алгоритмов}
-\label{subsec:Algoritm}
-Для нахождения более подходящего алгоритма выявления фиктивных аккаунтов были разработаны пробные модели, а после найдены их критерии качества. Так как были разработаны новые признаки <<соседства>>, оценка методов производилась сначала без них, а потом с ними.
- 
-Первое, что было сделано – это разметка датасета (ссылка на датасет как сделать). Фиктивные аккаунты были обозначены 1, а реальные – 0. Далее было произведено извлечение признаков, по которым проводилась кластеризация. Признаки описаны в разделе 3.4 Инженерия признаков.
+\label{subsec:experiments}
+Для нахождения подходящего алгоритма выявления фиктивных аккаунтов были проведены эксперименты с сравненем метрик. 
 
-Далее подробнее рассмотрим алгоритмы кластеризации, которые были использованы для нахождения аномалий в виде фиктивных аккаунтов. 
+Исследования проводились с несколькими наборами данных, у которых было разное соотношение настоящих и фальшивых аккаунтов, а также с разными параметрами алгоритмов. Процентные соотношения <<фейков>> в данных, которые были использованы: 10\%, 20\%, 30\%, 40\%, 50\%.
 
-\vspace{1.5em}
-\textbf{Алгоритм изолированного леса}
 
-Была произведена подготовка данных в виде заполнения пропущенных значений средним значением по столбцу. Была реализована нормализация признаков: они преобразованы в данные в диапазоне от 0 до 1. Установлена ожидаемая доля аномалий - 5\%.
-Аномалии (данные с индексом -1) были занесены в файл, а также создано графическое изображение для результатов кластеризации (рис. ~\ref{ris:isolation-forest}).
+\textbf{Изоляционный лес}. В ходе эксперимента использовались разные модели. Наиболее стабильные результаты показали две из них, они отличаются количеством деревьев: 50 в первой и 100 во второй, доля аномалий в обеих автоматическая. Они выдали одинаковые метрики, которые представлены в таблице~\ref{tabular:tableIsolationForest1}
 
-\begin{figure}[!ht]
-    \center{\includegraphics[width=1\linewidth]{image}}
-    \includegraphics[scale=0.6]{Курсовая работа/pic/anomaly_isolation-forest0.png}
-    \caption{Кластеризация методом изолированного леса}
-    \label{ris:isolation-forest}
-\end{figure}
-
-После этого были произведены расчеты метрик алгоритма, с использованием матрицы ошибок (табл. ~\ref{tabular:tableIsolationForest1}).
-
-\begin{table}[!ht]
-    \onehalfspacing \caption{Матрица ошибок}
-    \medskip
-    \begin{tabular}{c|cc}
-        & \text{Positive} & \text{Negative} \\
-        \hline
-        \text{True} & \text{8} & \text{152} \\
-        \text{False} & \text{5} & \text{89} \\
+\vspace{-0.5em}
+\begin{table}[H]
+    \caption{Метрики изоляционного леса}
+    \vspace{1em}
+    \small
+    \setstretch{1.0}
+    \begin{tabular}{|l|c|c|c|c|}
+    \hline
+    \multicolumn{1}{|c|}{\textbf{Датасет}} & \textbf{accuracy} & \textbf{precision} & \textbf{recall} & \textbf{F-measure} \\ \hline
+    % 5\% фейков & 0,92 & 0,33 & 0,50 & 0,40\\ \hline
+    10\% фейков & 0,49 & 0,10 & 0,50 & 0,17 \\ \hline
+    20\% фейков & 0,48 & 0,18 & 0,44 & 0,26 \\ \hline
+    30\% фейков & 0,50 & 0,25 & 0,33 & 0,29 \\ \hline
+    40\% фейков & 0,49 & 0,38 & 0,42 & 0,40 \\ \hline
+    50\% фейков & 0,41 & 0,38 & 0,29 & 0,33 \\ \hline
     \end{tabular}
     \label{tabular:tableIsolationForest1}
 \end{table}
 
-$$
-accuracy = \frac{TP+TN}{TP+TN+FP+FN} = 0,63
-$$
 
-$$
-precision = \frac{TP}{TP+FP} =  0,62
-$$
+\textbf{Иерархическая кластеризация}. Она может использоваться с разными методами соединения: одиночной связи (single linkage), полной связи (complete linkage), средней связи (average linkage), Уорда (Ward's linkage).
 
-$$
-recall = \frac{TP+TN}{TP+FN} = 0,08
-$$
-
-$$
-F\text{-}measure = 2\cdot \frac{precision \cdot recall}{precision+recall} = 0,14
-$$
-
-\vspace{1.5em}
-Расчеты метрик алгоритма, который работал со всеми признаками, включая признаки <<соседства>>. Матрица ошибок представлена в табл. ~\ref{tabular:tableIsolationForest2}
-
-\begin{table}[!ht]
-    \onehalfspacing \caption{Матрица ошибок}
-    \medskip
-    \begin{tabular}{c|cc}
-        & \text{Positive} & \text{Negative} \\
-        \hline
-        \text{True} & \text{7} & \text{151} \\
-        \text{False} & \text{6} & \text{90} \\
+Работа алгоритма с методом одиночной связи и разным содержанием фиктивных аккаунтов в датасетах представлена в таблице~\ref{tabular:hierclustering1}.
+\vspace{-0.5em}
+\begin{table}[H]
+    \caption{Метрики иерархической кластеризации: одиночная связь}
+    \vspace{1em}
+    \small
+    \setstretch{1.0}
+    \begin{tabular}{|l|c|c|c|c|}
+    \hline
+    \multicolumn{1}{|c|}{\textbf{Датасет}} & \textbf{accuracy} & \textbf{precision} & \textbf{recall} & \textbf{F-measure} \\ \hline
+    % 5\% фейков & 0,95 & 0,50 & 0,50 & 0,50 \\ \hline
+    10\% фейков & 0,85 & 0,25 & 0,25 & 0,25 \\ \hline
+    20\% фейков & 0,77 & 0,40 & 0,22 & 0,29 \\ \hline
+    30\% фейков & 0,72 & 0,67 & 0,13 & 0,22 \\ \hline
+    40\% фейков & 0,61 & 0,60 & 0,12 & 0,21 \\ \hline
+    50\% фейков & 0,51 & 0,60 & 0,09 & 0,15 \\ \hline
     \end{tabular}
-    \label{tabular:tableIsolationForest2}
+    \label{tabular:hierclustering1}
 \end{table}
 
-$$
-accuracy = \frac{TP+TN}{TP+TN+FP+FN} = 0,62
-$$
-
-$$
-precision = \frac{TP}{TP+FP} =  0,54
-$$
-
-$$
-recall = \frac{TP+TN}{TP+FN} = 0,07
-$$
-
-$$
-F\text{-}measure = 2\cdot \frac{precision \cdot recall}{precision+recall} = 0,12
-$$
-
-
-\newpage
-\textbf{Алгоритм иерархической кластеризации}
-
-Была произведена подготовка данных в виде заполнения пропущенных значений средним значением по столбцу. Была реализована нормализация признаков: они преобразованы в данные в диапазоне от 0 до 1. Была произведена сортировка по username\_length. Создана матрица расстояний с методом Single Linkage, так как он сильнее реаширует на выбросы. Создано графическое изображение для результатов кластеризации (рис. ~\ref{ris:anomaly-dendrogramm}).
-
-\begin{figure}[H]
-    \center{\includegraphics[width=0.4\linewidth]{image}}
-    \includegraphics[scale=0.5]{Курсовая работа/pic/anomaly_dendrogramm_single_ALL0.png}
-    \caption{Иерархическая кластеризация}
-    \label{ris:anomaly-dendrogramm}
-\end{figure}
-
-После этого были произведены расчеты метрик алгоритма, с использованием ячеек матрицы ошибок (табл. ~\ref{tabular:tableHierarchyClust1}). 
-
-\begin{table}[!ht]
-    \onehalfspacing \caption{Матрица ошибок}
-    \medskip
-    \begin{tabular}{c|cc}
-        & \text{Positive} & \text{Negative} \\
-        \hline
-        \text{True} & \text{3} & \text{150} \\
-        \text{False} & \text{7} & \text{94} \\
-    \end{tabular}
-    \label{tabular:tableHierarchyClust1}
-\end{table}
-
-$$
-accuracy = \frac{TP+TN}{TP+TN+FP+FN} = 0,60
-$$
-
-$$
-precision = \frac{TP}{TP+FP} =  0,3
-$$
-
-$$
-recall = \frac{TP+TN}{TP+FN} = 0,03
-$$
-
-$$
-F\text{-}measure = 2\cdot \frac{precision \cdot recall}{precision+recall} = 0,05
-$$
-
-\vspace{1.5em}
-Расчеты метрик алгоритма, который работал со всеми признаками, включая признаки <<соседства>>. Матрица ошибок представлена в табл. ~\ref{tabular:tableHierarchyClust2}
-
-\begin{table}[!ht]
-    \onehalfspacing \caption{Матрица ошибок}
-    \medskip
-    \begin{tabular}{c|cc}
-        & \text{Positive} & \text{Negative} \\
-        \hline
-        \text{True} & \text{4} & \text{149} \\
-        \text{False} & \text{8} & \text{93} \\
-    \end{tabular}
-    \label{tabular:tableHierarchyClust2}
-\end{table}
-
-$$
-accuracy = \frac{TP+TN}{TP+TN+FP+FN} = 0,60
-$$
-
-$$
-precision = \frac{TP}{TP+FP} =  0,33
-$$
-
-$$
-recall = \frac{TP+TN}{TP+FN} = 0,04
-$$
-
-$$
-F\text{-}measure = 2\cdot \frac{precision \cdot recall}{precision+recall} = 0,07
-$$
-
-\vspace{1.5em}
-\textbf{Алгоритм DBSCAN}
-
-Была произведена подготовка данных в виде заполнения пропущенных значений средним значением по столбцу. Была реализована нормализация признаков: они преобразованы в данные в диапазоне от 0 до 1. Кластеризация была произведена с параметрами eps = 1, min\_samples = 6. Выбраны аномалии с индексом -1 и создано графическое изображение для результатов кластеризации (рис. ~\ref{ris:dbscan}).
-
-\begin{figure}[H]
-    \center{\includegraphics[width=1\linewidth]{image}}
-    \includegraphics[scale=0.5]{Курсовая работа/pic/dbscan_clustering_ALL.png}
-    \caption{Иерархическая кластеризация}
-    \label{ris:dbscan}
-\end{figure}
-
-После этого были произведены расчеты метрик алгоритма, с использованием ячеек матрицы ошибок (табл. ~\ref{tabular:tableDBSCAN1}). 
-
-\begin{table}[!ht]
-    \onehalfspacing \caption{Матрица ошибок}
-    \medskip
-    \begin{tabular}{c|cc}
-        & \text{Positive} & \text{Negative} \\
-        \hline
-        \text{True} & \text{7} & \text{155} \\
-        \text{False} & \text{2} & \text{90} \\
-    \end{tabular}
-    \label{tabular:tableDBSCAN1}
-\end{table}
-
-$$
-accuracy = \frac{TP+TN}{TP+TN+FP+FN} = 0,60
-$$
-
-$$
-precision = \frac{TP}{TP+FP} =  0,3
-$$
-
-$$
-recall = \frac{TP+TN}{TP+FN} = 0,03
-$$
-
-$$
-F\text{-}measure = 2\cdot \frac{precision \cdot recall}{precision+recall} = 0,05
-$$
-
-\vspace{1.5em}
-Расчеты метрик алгоритма, который работал со всеми признаками, включая признаки <<соседства>>. Матрица ошибок представлена в табл. ~\ref{tabular:tableDBSCAN2}
-
-\begin{table}[!ht]
-    \onehalfspacing \caption{Матрица ошибок}
-    \medskip
-    \begin{tabular}{c|cc}
-        & \text{Positive} & \text{Negative} \\
-        \hline
-        \text{True} & \text{8} & \text{154} \\
-        \text{False} & \text{3} & \text{89} \\
-    \end{tabular}
-    \label{tabular:tableDBSCAN2}
-\end{table}
-
-$$
-accuracy = \frac{TP+TN}{TP+TN+FP+FN} = 0,64
-$$
-
-$$
-precision = \frac{TP}{TP+FP} =  0,73
-$$
-
-$$
-recall = \frac{TP+TN}{TP+FN} = 0,08
-$$
-
-$$
-F\text{-}measure = 2\cdot \frac{precision \cdot recall}{precision+recall} = 0,14
-$$
-
-\vspace{1.5em}
-\textbf{Сравнение результатов алгоритмов}
-
-Результаты рассчитанных метрик для всех реализованных алгоритмов представлены в таблице ~\ref{tabular:tableСomparison}.
+Работа алгоритма с методом полной связи и разным содержанием фиктивных аккаунтов в датасетах представлена в таблице~\ref{tabular:hierclustering2}.
 
 \begin{table}[H]
-    \onehalfspacing \caption{Метрики алгоритмов}
-    \medskip
-        \begin{tabular}{c|c|c|c|c}
-            & accuracy & precision & recall & F-measure \\ \hline
-            \multicolumn{5}{c}{Без признаков <<соседства>>} \\ \hline
-            Isolation forest & 0,63 & 0,62 & 0,08 & 0,14 \\  \hline 
-            Hierarchical clustering & 0,60 & 0,30 & 0,03 & 0,05 \\  \hline 
-            DBSCAN & 0,64 & 0,78 & 0,07 & 0,13\\ \hline 
-            \multicolumn{5}{c}{С признаками <<соседства>>} \\ \hline
-            Isolation forest & 0,62 & 0,54 & 0,07 & 0,12 \\  \hline 
-            Hierarchical clustering & 0,60 & 0,33 & 0,04 & 0,07 \\  \hline 
-            DBSCAN & 0,64 & 0,73 & 0,08 & 0,14\\ 
-        \end{tabular}
+    \caption{Метрики иерархической кластеризации: полная связь}
+    \vspace{1em}
+    \small
+    \setstretch{1.0}
+    \begin{tabular}{|l|c|c|c|c|}
+    \hline
+    \multicolumn{1}{|c|}{\textbf{Датасет}} & \textbf{accuracy} & \textbf{precision} & \textbf{recall} & \textbf{F-measure} \\ \hline
+    % 5\% фейков & 0,91 & 0,28 & 0,50 & 0,36 \\ \hline
+    10\% фейков & 0,82 & 0,20 & 0,25 & 0,22 \\ \hline
+    20\% фейков & 0,75 & 0,23 & 0,22 & 0,27 \\ \hline
+    30\% фейков & 0,54 & 0,17 & 0,13 & 0,15 \\ \hline
+    48\% фейков & 0,49 & 0,33 & 0,25 & 0,29 \\ \hline
+    50\% фейков & 0,40 & 0,32 & 0,17 & 0,22 \\ \hline
+    \end{tabular}
+    \label{tabular:hierclustering2}
+\end{table}
+
+Работа алгоритма с методом средней связи и разным содержанием фиктивных аккаунтов в датасетах представлена в таблице~\ref{tabular:hierclustering3}.
+\vspace{-0.3cm}
+\begin{table}[H]
+    \caption{Метрики иерархической кластеризации: средняя связь}
+    \vspace{1em}
+    \small
+    \setstretch{1.0}
+    \begin{tabular}{|l|c|c|c|c|}
+    \hline
+    \multicolumn{1}{|c|}{\textbf{Датасет}} & \textbf{accuracy} & \textbf{precision} & \textbf{recall} & \textbf{F-measure} \\ \hline
+    % 5\% фейков & 0,94 & 0,41 & 0,50 & 0,45 \\ \hline
+    10\% фейков & 0,87 & 0,33 & 0,25 & 0,29 \\ \hline
+    20\% фейков & 0,80 & 0,50 & 0,22 & 0,31 \\ \hline
+    30\% фейков & 0,58 & 0,20 & 0,13 & 0,16 \\ \hline
+    40\% фейков & 0,51 & 0,27 & 0,12 & 0,17 \\ \hline
+    50\% фейков & 0,43 & 0,27 & 0,09 & 0,13 \\ \hline
+    \end{tabular}
+    \label{tabular:hierclustering3}
+\end{table}
+
+Работа алгоритма с методом Уорда и разным содержанием фиктивных аккаунтов в датасетах представлена в таблице~\ref{tabular:hierclustering4}.
+\vspace{-0.3cm}
+\begin{table}[H]
+    \caption{Метрики иерархической кластеризации: метод Уорда}
+    \vspace{1em}
+    \small
+    \setstretch{1.0}
+    \begin{tabular}{|l|c|c|c|c|}
+    \hline
+    \multicolumn{1}{|c|}{\textbf{Датасет}} & \textbf{accuracy} & \textbf{precision} & \textbf{recall} & \textbf{F-measure} \\ \hline
+    % 5\% фейков & 0,95 & 0,56 & 0,50 & 0,53 \\ \hline
+    10\% фейков & 0,90 & 0,50 & 0,25 & 0,33 \\ \hline
+    20\% фейков & 0,82 & 0,67 & 0,22 & 0,33 \\ \hline
+    30\% фейков & 0,60 & 0,22 & 0,13 & 0,17 \\ \hline
+    38\% фейков & 0,53 & 0,30 & 0,12 & 0,18 \\ \hline
+    50\% фейков & 0,44 & 0,30 & 0,09 & 0,13 \\ \hline
+    \end{tabular}
+    \label{tabular:hierclustering4}
+\end{table}
+
+Агломеративная кластеризация не справляется с нахождением фиктивных аккаунтов, но для сравнения с другими алгоритмами будут использоваться результаты, полученные с помощью метода метода Уорда.
+
+\textbf{DBSCAN}. У алгоритма есть два параметра: $\textit{Eps}$ и $\textit{MinPts}$, которые зависят от данных и объема выбросов в них. Для каждого датасета они подбирались индивидуально, метрики представлены в таблицах ниже. 
+
+Результаты работы алгоритма с данными, содержащими 10\% фиктивных аккаунтов, представлены в таблице~\ref{tabular:DBSCAN2}. Исходя из них, для дальнейшего сравнения алгоритмов будут использоваться параметры $Eps = 0.7$ и $MinPts = 4$.
+
+\begin{table}[H]
+    \caption{Метрики DBSCAN: датасет с 10\% фиктивных аккаунтов}
+    \vspace{1em}
+    \small
+    \setstretch{1.0}
+    \begin{tabular}{|l|c|c|c|c|}
+    \hline
+    \multicolumn{1}{|c|}{\textbf{Параметры}} & \textbf{accuracy} & \textbf{precision} & \textbf{recall} & \textbf{F-measure} \\ \hline
+    Eps = 0.4; MinPts = 3 & 0,79 & 0,17 & 0,25 & 0,20 \\ \hline
+    Eps = 0.5; MinPts = 4 & 0,85 & 0,25 & 0,25 & 0,25 \\ \hline
+    Eps = 0.7; MinPts = 4 & 0,87 & 0,33 & 0,25 & 0,29 \\ \hline
+    \end{tabular}
+    \label{tabular:DBSCAN2}
+\end{table}
+
+Результаты работы алгоритма с данными, содержащими 20\% фиктивных аккаунтов, представлены в таблице~\ref{tabular:DBSCAN3}. В данном случае при сравнении будут использоваться параметры $Eps = 0.5$ и $MinPts = 4$.
+
+\begin{table}[H]
+    \caption{Метрики DBSCAN: датасет с 20\% фиктивных аккаунтов}
+    \vspace{1em}
+    \small
+    \setstretch{1.0}
+    \begin{tabular}{|l|c|c|c|c|}
+    \hline
+    \multicolumn{1}{|c|}{\textbf{Параметры}} & \textbf{accuracy} & \textbf{precision} & \textbf{recall} & \textbf{F-measure} \\ \hline
+    Eps = 0.4; MinPts = 4 & 0,79 & 0,29 & 0,22 & 0,25 \\ \hline
+    Eps = 0.5; MinPts = 4 & 0,77 & 0,40 & 0,22 & 0,29 \\ \hline
+    Eps = 0.6; MinPts = 5 & 0,77 & 0,33 & 0,11 & 0,17 \\ \hline
+    \end{tabular}
+    \label{tabular:DBSCAN3}
+\end{table}
+
+Результаты работы алгоритма с данными, содержащими 30\% фиктивных аккаунтов, представлены в таблице~\ref{tabular:DBSCAN4}. Исходя из них, для дальнейших исследований с этим датасетом будут использоваться параметры $Eps = 0.5$ и $MinPts = 5$.
+
+\begin{table}[H]
+    \caption{Метрики DBSCAN: датасет с 30\% фиктивных аккаунтов}
+    \vspace{1em}
+    \small
+    \setstretch{1.0}
+    \begin{tabular}{|l|c|c|c|c|}
+    \hline
+    \multicolumn{1}{|c|}{\textbf{Параметры}} & \textbf{accuracy} & \textbf{precision} & \textbf{recall} & \textbf{F-measure} \\ \hline
+    Eps = 0.4; MinPts = 5 & 0,66 & 0,33 & 0,13 & 0,19 \\ \hline
+    Eps = 0.5; MinPts = 5 & 0,70 & 0,50 & 0,13 & 0,21 \\ \hline
+    Eps = 0.45; MinPts = 6 & 0,68 & 0,40 & 0,13 & 0,20 \\ \hline
+    \end{tabular}
+    \label{tabular:DBSCAN4}
+\end{table}
+
+
+Результаты работы алгоритма с данными, содержащими 40\% фиктивных аккаунтов, представлены в таблице~\ref{tabular:DBSCAN5}. Далее при сравнении будут использоваться параметры $Eps = 0.5$ и $MinPts = 6$.
+
+\begin{table}[H]
+    \caption{Метрики DBSCAN: датасет с 40\% фиктивных аккаунтов}
+    \vspace{1em}
+    \small
+    \setstretch{1.0}
+    \begin{tabular}{|l|c|c|c|c|}
+    \hline
+    \multicolumn{1}{|c|}{\textbf{Параметры}} & \textbf{accuracy} & \textbf{precision} & \textbf{recall} & \textbf{F-measure} \\ \hline
+    Eps = 0.4; MinPts = 6 & 0,59 & 0,50 & 0,12 & 0,20 \\ \hline
+    Eps = 0.5; MinPts = 6 & 0,61 & 0,60 & 0,12 & 0,21 \\ \hline
+    Eps = 0.5; MinPts = 8 & 0,56 & 0,38 & 0,12 & 0,19 \\ \hline
+    \end{tabular}
+    \label{tabular:DBSCAN5}
+\end{table}
+
+
+Результаты работы алгоритма с данными, содержащими 50\% фиктивных аккаунтов, представлены в таблице~\ref{tabular:DBSCAN6}. Для дальнейшего сравнения будут использоваться параметры $Eps = 0.4$ и $MinPts = 8$.
+
+\begin{table}[H]
+    \caption{Метрики DBSCAN: датасет с 50\% фиктивных аккаунтов}
+    \vspace{1em}
+    \small
+    \setstretch{1.0}
+    \begin{tabular}{|l|c|c|c|c|}
+    \hline
+    \multicolumn{1}{|c|}{\textbf{Параметры}} & \textbf{accuracy} & \textbf{precision} & \textbf{recall} & \textbf{F-measure} \\ \hline
+    Eps = 0.4; MinPts = 8 & 0,43 & 0,31 & 0,11 & 0,17 \\ \hline
+    Eps = 0.5; MinPts = 8 & 0,47 & 0,38 & 0,09 & 0,14 \\ \hline
+    Eps = 0.6; MinPts = 9 & 0,53 & 0,75 & 0,09 & 0,15 \\ \hline
+    \end{tabular}
+    \label{tabular:DBSCAN6}
+\end{table}
+
+
+\textbf{Дерево решений}. Было создано несколько моделей с разными критериями: индексом Джини и энтропией. Модель, которая использовала энтропию при разделении, показала лучшие результаты, которые представлены в таблице~\ref{tabular:tableDecTree}
+
+\vspace{-0.5em}
+\begin{table}[H]
+    \caption{Метрики дерева решений}
+    \vspace{1em}
+    \small
+    \setstretch{1.0}
+    \begin{tabular}{|l|c|c|c|c|}
+    \hline
+    \multicolumn{1}{|c|}{\textbf{Датасет}} & \textbf{accuracy} & \textbf{precision} & \textbf{recall} & \textbf{F-measure} \\ \hline
+    % 5\% фейков & 0,92 & 0,33 & 0,50 & 0,40\\ \hline
+    10\% фейков & 0,90 & 0,50 & 0,75 & 0,60 \\ \hline
+    20\% фейков & 0,93 & 0,80 & 0,89 & 0,84 \\ \hline
+    30\% фейков & 0,84 & 0,82 & 0,60 & 0,69 \\ \hline
+    40\% фейков & 0,85 & 0,89 & 0,71 & 0,79 \\ \hline
+    50\% фейков & 0,84 & 0,93 & 0,74 & 0,83 \\ \hline
+    \end{tabular}
+    \label{tabular:tableDecTree}
+\end{table}
+
+
+\textbf{Случайный лес}. Создавались модели с разным количеством деревьев решений. Модель, которая строила 100 деревьев, показала лучшие результаты, они представлены в таблице~\ref{tabular:tableDecTree}
+
+\vspace{-0.5em}
+\begin{table}[H]
+    \caption{Метрики случайного леса}
+    \vspace{1em}
+    \small
+    \setstretch{1.0}
+    \begin{tabular}{|l|c|c|c|c|}
+    \hline
+    \multicolumn{1}{|c|}{\textbf{Датасет}} & \textbf{accuracy} & \textbf{precision} & \textbf{recall} & \textbf{F-measure} \\ \hline
+    % 5\% фейков & 0,92 & 0,33 & 0,50 & 0,40\\ \hline
+    10\% фейков & 0,90 & 0,50 & 0,75 & 0,60 \\ \hline
+    20\% фейков & 0,86 & 0,67 & 0,67 & 0,67 \\ \hline
+    30\% фейков & 0,82 & 0,75 & 0,60 & 0,67 \\ \hline
+    40\% фейков & 0,85 & 0,94 & 0,67 & 0,78 \\ \hline
+    50\% фейков & 0,83 & 0,96 & 0,69 & 0,80 \\ \hline
+    \end{tabular}
+    \label{tabular:tableDecTree}
+\end{table}
+
+\textbf{Сравнение результатов алгоритмов}. Рассчитанные метрики для всех реализованных алгоритмов с различными соотношениями фиктивных аккаунтов представлены в таблице~\ref{tabular:tableСomparison}. 
+
+По метрикам можно сделать вывод, что с нахождением фальшивых записей лучше всего справляются алгоритмы классификации, в частности дерево решений.
+
+\begin{table}[H]
+    \caption{Метрики алгоритмов}
+    \vspace{1em}
+    \small
+    \setstretch{1.0}
+    \begin{tabular}{|lllll|}
+    \hline
+    \multicolumn{1}{|c|}{\textbf{Алгоритмы}}          & \multicolumn{1}{c|}{\textbf{accuracy}} & \multicolumn{1}{c|}{\textbf{precision}} & \multicolumn{1}{c|}{\textbf{recall}} & \multicolumn{1}{c|}{\textbf{F-measure}} \\ \hline
+    
+    % \multicolumn{5}{|c|}{5\% фейков}                                                                                                \\ \hline
+    % \multicolumn{1}{|l|}{Изоляционный лес}            & \multicolumn{1}{c|}{0,83}              & \multicolumn{1}{c|}{0,07}               & \multicolumn{1}{c|}{0,20}            & \multicolumn{1}{c|}{0,10}               \\ \hline
+    % \multicolumn{1}{|l|}{Иерархическая кластеризация} & \multicolumn{1}{c|}{0,80}              & \multicolumn{1}{c|}{0,00}               & \multicolumn{1}{c|}{0,00}            & \multicolumn{1}{c|}{0,00}               \\ \hline
+    % \multicolumn{1}{|l|}{DBSCAN}                      & \multicolumn{1}{c|}{0,94}                 & \multicolumn{1}{c|}{0,20}                  & \multicolumn{1}{c|}{0,06}               & \multicolumn{1}{c|}{0,08}                                       \\ \hline
+
+    
+    \multicolumn{5}{|c|}{10\% фейков} \\ \hline
+    \multicolumn{1}{|l|}{Изоляционный лес} & \multicolumn{1}{c|}{0,49} & \multicolumn{1}{c|}{0,10} & \multicolumn{1}{c|}{0,50} & \multicolumn{1}{c|}{0,17}     \\ \hline
+    
+    \multicolumn{1}{|l|}{Иерархическая кластеризация} & \multicolumn{1}{c|}{0,90} & \multicolumn{1}{c|}{0,50} & \multicolumn{1}{c|}{0,25} &  \multicolumn{1}{c|}{0,33} \\ \hline
+    
+    \multicolumn{1}{|l|}{DBSCAN} & \multicolumn{1}{c|}{0,87} & \multicolumn{1}{c|}{0,33} & \multicolumn{1}{c|}{0,25} & \multicolumn{1}{c|}{0,29} \\ \hline
+
+    \multicolumn{1}{|l|}{Дерево решений} & \multicolumn{1}{c|}{0,90} & \multicolumn{1}{c|}{0,50} & \multicolumn{1}{c|}{0,75} & \multicolumn{1}{c|}{0,60} \\ \hline
+    
+    \multicolumn{1}{|l|}{Случайный лес} & \multicolumn{1}{c|}{0,90} & \multicolumn{1}{c|}{0,50} & \multicolumn{1}{c|}{0,75} & \multicolumn{1}{c|}{0,60} \\ \hline
+
+
+    
+    \multicolumn{5}{|c|}{20\% фейков} \\ \hline
+    \multicolumn{1}{|l|}{Изоляционный лес} & \multicolumn{1}{c|}{0,48} & \multicolumn{1}{c|}{0,18} & \multicolumn{1}{c|}{0,44} & \multicolumn{1}{c|}{0,26} \\ \hline
+    
+    \multicolumn{1}{|l|}{Иерархическая кластеризация} & \multicolumn{1}{c|}{0,82} & \multicolumn{1}{c|}{0,67} & \multicolumn{1}{c|}{0,22} & \multicolumn{1}{c|}{0,33} \\ \hline
+    
+    \multicolumn{1}{|l|}{DBSCAN} & \multicolumn{1}{c|}{0,77} & \multicolumn{1}{c|}{0,40} & \multicolumn{1}{c|}{0,22} & \multicolumn{1}{c|}{0,29} \\ \hline
+
+    \multicolumn{1}{|l|}{Дерево решений} & \multicolumn{1}{c|}{0,93} & \multicolumn{1}{c|}{0,80} & \multicolumn{1}{c|}{0,89} & \multicolumn{1}{c|}{0,84} \\ \hline
+    
+    \multicolumn{1}{|l|}{Случайный лес} & \multicolumn{1}{c|}{0,86} & \multicolumn{1}{c|}{0,67} & \multicolumn{1}{c|}{0,67} & \multicolumn{1}{c|}{0,67} \\ \hline
+
+
+    
+    \multicolumn{5}{|c|}{30\% фейков} \\ \hline
+    \multicolumn{1}{|l|}{Изоляционный лес} & \multicolumn{1}{c|}{0,50} & \multicolumn{1}{c|}{0,25} & \multicolumn{1}{c|}{0,33} & \multicolumn{1}{c|}{0,29} \\ \hline
+    
+    \multicolumn{1}{|l|}{Иерархическая кластеризация} & \multicolumn{1}{c|}{0,60} & \multicolumn{1}{c|}{0,22} & \multicolumn{1}{c|}{0,13} & \multicolumn{1}{c|}{0,17} \\ \hline
+    
+    \multicolumn{1}{|l|}{DBSCAN} & \multicolumn{1}{c|}{0,70} & \multicolumn{1}{c|}{0,50} & \multicolumn{1}{c|}{0,13} & \multicolumn{1}{c|}{0,21} \\ \hline
+
+    \multicolumn{1}{|l|}{Дерево решений} & \multicolumn{1}{c|}{0,84} & \multicolumn{1}{c|}{0,82} & \multicolumn{1}{c|}{0,60} & \multicolumn{1}{c|}{0,69} \\ \hline
+    
+    \multicolumn{1}{|l|}{Случайный лес} & \multicolumn{1}{c|}{0,82} & \multicolumn{1}{c|}{0,75} & \multicolumn{1}{c|}{0,60} & \multicolumn{1}{c|}{0,67} \\ \hline
+
+
+    
+    \multicolumn{5}{|c|}{40\% фейков} \\ \hline
+    \multicolumn{1}{|l|}{Изоляционный лес} & \multicolumn{1}{c|}{0,49} & \multicolumn{1}{c|}{0,38} & \multicolumn{1}{c|}{0,42} & \multicolumn{1}{c|}{0,40} \\ \hline
+    
+    \multicolumn{1}{|l|}{Иерархическая кластеризация} & \multicolumn{1}{c|}{0,53} & \multicolumn{1}{c|}{0,30} & \multicolumn{1}{c|}{0,12} & \multicolumn{1}{c|}{0,18} \\ \hline
+    
+    \multicolumn{1}{|l|}{DBSCAN} & \multicolumn{1}{c|}{0,61} & \multicolumn{1}{c|}{0,60} & \multicolumn{1}{c|}{0,12} & \multicolumn{1}{c|}{0,21} \\ \hline
+
+    \multicolumn{1}{|l|}{Дерево решений} & \multicolumn{1}{c|}{0,85} & \multicolumn{1}{c|}{0,89} & \multicolumn{1}{c|}{0,71} & \multicolumn{1}{c|}{0,79} \\ \hline
+    
+    \multicolumn{1}{|l|}{Случайный лес} & \multicolumn{1}{c|}{0,85} & \multicolumn{1}{c|}{0,94} & \multicolumn{1}{c|}{0,67} & \multicolumn{1}{c|}{0,78} \\ \hline
+
+
+    
+    \multicolumn{5}{|c|}{50\% фейков} \\ \hline
+    \multicolumn{1}{|l|}{Изоляционный лес} & \multicolumn{1}{c|}{0,41} & \multicolumn{1}{c|}{0,38} & \multicolumn{1}{c|}{0,29} & \multicolumn{1}{c|}{0,33} \\ \hline
+    
+    \multicolumn{1}{|l|}{Иерархическая кластеризация} & \multicolumn{1}{c|}{0,44} & \multicolumn{1}{c|}{0,30} & \multicolumn{1}{c|}{0,09} & \multicolumn{1}{c|}{0,13} \\ \hline
+    
+    \multicolumn{1}{|l|}{DBSCAN} & \multicolumn{1}{c|}{0,43} & \multicolumn{1}{c|}{0,31} & \multicolumn{1}{c|}{0,11} & \multicolumn{1}{c|}{0,17} \\ \hline
+
+    \multicolumn{1}{|l|}{Дерево решений} & \multicolumn{1}{c|}{0,84} & \multicolumn{1}{c|}{0,93} & \multicolumn{1}{c|}{0,74} & \multicolumn{1}{c|}{0,83} \\ \hline
+    
+    \multicolumn{1}{|l|}{Случайный лес} & \multicolumn{1}{c|}{0,83} & \multicolumn{1}{c|}{0,96} & \multicolumn{1}{c|}{0,69} & \multicolumn{1}{c|}{0,80} \\ \hline
+    \end{tabular}
     \label{tabular:tableСomparison}
 \end{table}
 
-По данным результатам можно сделать вывод, что без дополнительных признаков больше подходят для обрнаружения фиктивных аккаунтов Isolation forest и DBSCAN, с признаками же выигрывает DBSCAN.
-
-\subsection{Функциональное тестирование}
-Провести тестирование на соответствие приложения предъявленным требованиям. 
-
-\vspace{1.5em}
-\subsection{Вычислительные эксперименты}
-В данном разделе представлены вычислительные эксперименты для набора данных.
