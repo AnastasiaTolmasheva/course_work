@@ -1,0 +1,40 @@
+user_id,username,password,email,url,phone,mailing_address,billing_address,country,locales,date_last_email,date_registered,date_validated,date_last_login,must_change_password,auth_id,auth_str,disabled,disabled_reason,inline_help,gossip,is_fake
+89,'senabpde','b7a963923bb2767072a8cf990c34366f','s.e.rvicd.1576@gmail.com','','123456','ser.vi.cd.1.5.76@gmail.com',NULL,'IM','',NULL,'2014-11-24 13:41:55',NULL,'2014-11-24 13:41:55',0,NULL,NULL,0,NULL,0,NULL,1
+101,'fercook','9e372d909d45ec2729e44cc1d1b8c86d','fernando.cucchietti@bsc.es','','+34934137716',"<p>C/Gran Capita 2-4</p><p>Oficina 204, Edifici Nexus I</p><p>Barcelona, 08034 Spain)</p>",NULL,'ES','',NULL,'2014-12-05 17:41:51',NULL,'2015-02-26 14:27:21',0,NULL,NULL,0,NULL,0,NULL,0
+103,'sokolinsky','$2y$10$o4XdzZjdsUoJKZ2TUDxAS.3Ct2XvarOR/77Ox/NcsP9gmgHU4bzFq','Leonid.Sokolinsky@susu.ru','https://sok.susu.ru/','+79048040330','',NULL,'RU','',NULL,'2014-12-11 16:21:17',NULL,'2022-01-24 16:35:42',0,NULL,NULL,0,NULL,0,NULL,0
+104,'alowayyeds','64c12e053ba2c198ee0fdcf7a61ab861','salowayyed@kacst.edu.sa','','','',NULL,'NL','','2019-11-29 11:36:31','2014-12-11 17:57:32',NULL,'2020-02-23 16:51:21',0,NULL,NULL,0,NULL,0,NULL,0
+105,'omutlu','47a8579930562e2a4970f01482158f12','omutlu@gmail.com','http://users.ece.cmu.edu/~omutlu/','','',NULL,'','',NULL,'2014-12-11 20:44:30',NULL,'2015-02-18 02:28:25',0,NULL,NULL,0,NULL,0,NULL,0
+106,'alastove','260b7f4e53d4f787e44d4f2f12820d09','alexey.lastovetsky@ucd.ie','http://hcl.ucd.ie/user/alexey-lastovetsky','','',NULL,'','',NULL,'2014-12-12 16:52:13',NULL,'2018-06-10 03:06:42',0,NULL,NULL,0,NULL,0,NULL,0
+111,'daryin','4eeeaefdda4591da9d0e8f3d6c721dfa','alexander.daryin@t-platforms.ru','','+79166331259','',NULL,'','',NULL,'2014-12-17 21:23:34',NULL,'2015-09-10 02:42:07',0,NULL,NULL,0,NULL,0,NULL,0
+150,'xiaoyxiaoy','e85d0575864b36aaafa275a081c67186','13574817196@163.com','HTTP://www.nudt.edu.cn','','',NULL,'CN','',NULL,'2015-02-13 17:21:56',NULL,'2016-04-11 22:31:59',0,NULL,NULL,0,NULL,0,NULL,0
+161,'rauber','3558286571dcb06be01966d60ae4ae78','rauber@uni-bayreuth.de','','','',NULL,'','',NULL,'2015-02-27 14:31:04',NULL,'2015-08-27 18:53:58',0,NULL,NULL,0,NULL,0,NULL,0
+162,'hrach','79659fac71beac0d11bbbddd1b2842eb','hrach@sci.am','','','',NULL,'AM','',NULL,'2015-02-27 17:56:44',NULL,'2015-06-10 17:04:36',0,NULL,NULL,0,NULL,0,NULL,0
+180,'ariel','507fbf55bfd685a04e5b9d2b4a04aa6f','ariel@man.poznan.pl','','','',NULL,'','',NULL,'2015-03-09 17:54:34',NULL,'2015-09-08 11:34:42',0,NULL,NULL,0,NULL,0,NULL,0
+181,'gustavo_chavezchavez','4c0f91d1995a152eed8ed09976972eb7','gustavo.chavezchavez@kaust.edu.sa','','','',NULL,'','',NULL,'2015-03-11 16:05:19',NULL,'2015-03-11 16:05:19',0,NULL,NULL,0,NULL,0,NULL,0
+191,'ltaief','d4af462f705ae7ef4bfddf691780bada','Hatem.Ltaief@kaust.edu.sa','','','',NULL,'','',NULL,'2015-03-16 16:52:18',NULL,'2015-06-18 13:25:51',0,NULL,NULL,0,NULL,0,NULL,0
+200,'asa','$2y$10$ToRanZH7x4si8ojtTEmfE.iy7t9SD5O7tyx/4r6HVqUXiIBRZNfrK','asa@parallel.ru','','','',NULL,'RU','',NULL,'2015-03-25 11:58:11',NULL,'2022-02-01 23:01:37',0,NULL,NULL,0,NULL,0,NULL,0
+202,'movchan','ecf8f3aa3a34d5a745c79e2539cc557a','movchanav@susu.ru','','+7 952) 517 85 92','',NULL,'RU','','2015-08-18 23:07:05','2015-03-27 09:06:04',NULL,'2016-04-02 21:06:10',0,NULL,NULL,1,'',0,NULL,0
+213,'nchaimov','d47261fba6900872521a67b047069c8e','nchaimov@uoregon.edu','','','',NULL,'','',NULL,'2015-04-03 00:27:20',NULL,'2019-07-23 20:33:39',0,NULL,NULL,0,NULL,0,NULL,0
+220,'vad','$2y$10$tgnIblwe7lwsImEWhywmmujqgdgQ/vrKvDA/DgPYnakLP432lE9f.','vadim@parallel.ru','','','',NULL,'RU','',NULL,'2015-04-06 12:56:33',NULL,'2022-11-28 11:51:09',0,NULL,NULL,0,NULL,0,NULL,0
+225,'lubamomu','bbc32c4637f3e35b01e055161474e355','egimvojo@emailrtg.org','http://lasix-buy-online.net/','123456','egimvojo@emailrtg.org',NULL,'SC','',NULL,'2015-05-30 08:51:10',NULL,'2015-05-30 08:51:11',0,NULL,NULL,0,NULL,0,NULL,1
+226,'dumbear','d8baf5decac4ee865feca91f6f299304','yaxiong.liang@gmail.com','','','',NULL,'CN','',NULL,'2015-06-04 12:33:51',NULL,'2015-10-29 05:43:34',0,NULL,NULL,0,NULL,0,NULL,0
+229,'henry_gardner','7bf867a84a253d42028c2dcab94049b1','Henry.Gardner@anu.edu.au','','','',NULL,'','',NULL,'2015-06-07 13:40:55',NULL,'2015-06-07 13:40:57',0,NULL,NULL,0,NULL,0,NULL,0
+230,'tangwt','fd83d02313270790d702b0f8ca7581ec','tangwt@ihpc.a-star.edu.sg','','','',NULL,'','',NULL,'2015-06-07 18:37:39',NULL,'2015-08-11 07:10:03',0,NULL,NULL,0,NULL,0,NULL,0
+237,'alexandreramos','76d492ecb82cc89dd9c3619f638c7925','ramos.a.f@gmail.com','','',"Av. Arlindo Béttio, 1000. Ermelino Matarazzo, São Paulo, SP",NULL,'BR','',NULL,'2015-07-02 17:51:57',NULL,'2015-11-01 23:39:29',0,NULL,NULL,0,NULL,0,NULL,0
+238,'benswift','e54a4d6ecd0e17e46bcb1e61e043f2da','ben.swift@anu.edu.au','','','',NULL,'','',NULL,'2015-07-03 08:58:43',NULL,'2016-04-06 04:20:52',0,NULL,NULL,0,NULL,0,NULL,0
+246,'kennethban','37694b3238c162b98c69a0406586cc3e','bchbhkk@nus.edu.sg','','','',NULL,'SG','',NULL,'2015-07-07 09:35:16',NULL,'2015-12-07 08:10:17',0,NULL,NULL,0,NULL,0,NULL,0
+249,'hankchilds','83c418d734379855d1a8532df9ebb60f','hank@uoregon.edu','','','',NULL,'','',NULL,'2015-07-09 19:08:52',NULL,'2015-12-07 22:59:52',0,NULL,NULL,0,NULL,0,NULL,0
+317,'mirzoev','fe5cca612abf375f880018d830cc33bc','mirzoev@physics.susu.ac.ru','','','',NULL,'RU','',NULL,'2015-11-16 08:30:45',NULL,'2015-11-16 20:05:34',0,NULL,NULL,0,NULL,0,NULL,0
+324,'asrivast','52c34ec36a03ea538d4d1994722065fc','asrivast@gatech.edu','','+14049550825',"<p>290 Hunnicutt St NW</p><p>Atlanta, GA 30313</p>",NULL,'US','',NULL,'2016-01-30 02:49:05',NULL,'2016-04-06 02:46:50',0,NULL,NULL,0,NULL,0,NULL,0
+325,'guangs','e683b02384203fefbbe4360b21563b3c','suoguang@nudt.edu.cn','','','',NULL,'','',NULL,'2016-02-15 19:27:31',NULL,'2016-08-04 17:16:53',0,NULL,NULL,0,NULL,0,NULL,0
+334,'igor_odintsov','e065ac0dba9b0db9318ec4119a3446cf','igor_odintsov@rsc-tech.ru','','+79219306709','',NULL,'RU','',NULL,'2016-04-22 02:59:41',NULL,'2017-04-21 00:34:29',0,NULL,NULL,0,NULL,0,NULL,0
+335,'orlov_sa','a0e18a8d2636e2d76a92b3a41472a73c','orlov@ftf.tsu.ru','','+79039537467','',NULL,'RU','',NULL,'2016-04-22 13:34:14',NULL,'2016-04-22 13:34:14',0,NULL,NULL,0,NULL,0,NULL,0
+337,'vittorio1981','$2y$10$3zmcle56AgC4/qN67og69ufxU75KKC0CKSsJ9DfQk6Mph8VBkZrJ2','stepanen@srcc.msu.ru','','+79164177002','',NULL,'RU','',NULL,'2016-04-25 21:00:55',NULL,'2022-07-16 02:41:53',0,NULL,NULL,0,NULL,0,'',0
+338,'asmirnov','0502f193bfd4fb82fe3d58c4693e63f9','asmirnov80@gmail.com','','','',NULL,'RU','',NULL,'2016-05-13 17:41:04',NULL,'2018-05-17 15:25:41',0,NULL,NULL,0,NULL,0,NULL,0
+841,'evstigneevnm','bb0cc55f160dc729cb795dbd3dd893de','evstigneevnm@yandex.ru','','','',NULL,'','',NULL,'2018-03-18 19:49:28',NULL,'2018-07-04 13:40:02',0,NULL,NULL,0,NULL,0,NULL,0
+843,'kusnezov','93f91c5b2e15b458bd961fafb08092fc','dimitri.kusnezov@nnsa.doe.gov','','240-477-9040','<p>1000 Independence Ave SW</p><p>Washington DC 20585 USA</p>',NULL,'US','',NULL,'2018-03-23 18:26:58',NULL,'2018-04-15 09:51:09',0,NULL,NULL,0,NULL,0,NULL,0
+869,'paulojoaqu','15d61f7ed202160ca9eb7f866f40f428','paulojoaquimcavalcanti@gmx.net','https://medicamentos.club/quitoplan-emagrece-mesmo/','02687 30 08 89','paulojoaquimcavalcanti@gmx.net',NULL,'DE','',NULL,'2018-04-23 23:53:30',NULL,'2018-04-23 23:53:30',0,NULL,NULL,0,NULL,0,NULL,1
+872,'joodavirib','35b2c3b9b039a05f4f465ccae7f3818e','joodaviribeiro@t-online.de','https://medicamentos.club/','06-84447551','joodaviribeiro@t-online.de',NULL,'NL','',NULL,'2018-04-24 01:11:38',NULL,'2018-04-24 01:11:38',0,NULL,NULL,0,NULL,0,NULL,1
+1160,'ikapyrin','ef875cb1db5e895f21ce5c29c0a8e398','ivan.kapyrin@gmail.com','','','',NULL,'RU','',NULL,'2018-05-21 17:07:08',NULL,'2018-05-21 17:07:08',0,NULL,NULL,0,NULL,0,NULL,0
+1244,'kpv','44f1618e33df8f98fcb5fd58b6c1190a','pvkomarov@gmail.com','','','',NULL,'','',NULL,'2018-08-09 22:41:12',NULL,'2018-11-24 21:08:51',0,NULL,NULL,0,NULL,0,NULL,0
+1245,'ztsv','0f229dc39f83e6952c148a568773f5d7','ztsv@ibrae.ac.ru','','7 910 416 10 37',"52, B. Tulskaja, Moscow, Russia",NULL,'RU','',NULL,'2018-08-11 17:19:57',NULL,'2018-11-16 12:56:20',0,NULL,NULL,0,NULL,0,NULL,0
