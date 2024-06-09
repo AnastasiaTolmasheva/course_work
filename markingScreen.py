@@ -124,13 +124,10 @@ class MarkingScreen(tk.Toplevel):
             if confirm:
                 self.save_marking()
                 self.show_main_screen()
-                self.destroy()
             else:
                 self.show_main_screen()
-                self.destroy()
         else:
             self.show_main_screen()
-            self.destroy()
 
 
     def save_marking(self):
@@ -160,15 +157,15 @@ class MarkingScreen(tk.Toplevel):
                 for row in data:
                     cursor.execute(f"INSERT INTO {selected_table} VALUES ({', '.join(['?'] * len(row))})", row)
                 conn.commit()
-                messagebox.showinfo("Успешно", "Изменения успешно сохранены в базе данных")
+                messagebox.showinfo("Успешно", "Изменения успешно сохранены в базе данных.")
             except sqlite3.Error as e:
                 conn.rollback()
-                messagebox.showerror("Ошибка", f"Произошла ошибка при сохранении данных: {str(e)}")
+                messagebox.showerror("Ошибка", f"Произошла ошибка при сохранении данных: {str(e)}.")
             finally:
                 conn.close()
                 self.data_changed = False  # Сброс флага изменений после сохранения (новых изменений нет)
         else:
-            messagebox.showwarning("Предупреждение", "Не выбрана таблица для сохранения данных")
+            messagebox.showwarning("Предупреждение", "Не выбрана таблица для сохранения данных.")
 
 
     def load_selected_table(self, event):
@@ -204,58 +201,66 @@ class MarkingScreen(tk.Toplevel):
         """
         if not self.edit_window_open:  # Проверяем, открыто ли окно редактирования ячейки
             self.edit_window_open = True  # Устанавливаем флаг, что окно редактирования ячейки открыто
-            
+
             # Настройки окна редактирования значения
             edit_window = tk.Toplevel(self)
-            edit_window.title("Редактирование ячейки")
+            edit_window.title("Изменение значения")
             edit_window.geometry("300x100")
 
-            # Блокировка обработчика событий таблицы данных - невозможно вызвать новое окно редактирования ячейки при уже одном открытом
+            # Блокировка обработчика событий таблицы данных
             self.data_table.unbind("<Double-1>")
+
+            # Идентификация выбранной строки и колонки
             cell = self.data_table.identify("item", event.x, event.y)
-
-            # Определение индекса колонки
             column_id = self.data_table.identify_column(event.x)
-            column_index = int(column_id.split("#")[1]) if '#' in column_id else 0
-            initial_value = self.data_table.item(cell, "values")[column_index - 1]
+            column_index = int(column_id.replace("#", ""))
 
-            # Виджет для редактирования значения
-            entry = Entry(edit_window, width=50)
-            entry.insert(0, initial_value)
-            entry.pack(padx=20, pady=15)
+            # Проверка, что клик не в заголовке
+            if cell and column_index > 0:
+                initial_value = self.data_table.item(cell, "values")[column_index - 1]
 
-            def save_value():
-                """
-                Сохранение измененного значения ячейки
-                """
-                value = entry.get() # Получение нового значения ячейки
-                self.data_table.set(cell, column_id, value)
+                # Виджет для редактирования значения
+                entry = Entry(edit_window, width=50)
+                entry.insert(0, initial_value)
+                entry.pack(padx=20, pady=15)
+
+                def save_value():
+                    """
+                    Сохранение измененного значения ячейки
+                    """
+                    value = entry.get()  # Получение нового значения ячейки
+                    self.data_table.set(cell, column_id, value)
+                    edit_window.destroy()
+                    self.edit_window_open = False  # Сброс флага после закрытия окна редактирования
+
+                    # Разблокировка обработчика событий таблицы
+                    self.data_table.bind("<Double-1>", self.on_double_click)
+                    self.data_changed = True  # Устанавливаем флаг изменений данных
+
+                # Виджет кнопки для применения изменений
+                save_button = Button(edit_window, text="Применить", command=save_value)
+                save_button.pack(side="left", padx=20, pady=5)
+
+                def cancel():
+                    """
+                    Отмена редактирования значения ячейки
+                    """
+                    edit_window.destroy()
+                    self.edit_window_open = False  # Сброс флага после закрытия окна редактирования
+
+                    # Разблокировка обработчика событий таблицы
+                    self.data_table.bind("<Double-1>", self.on_double_click)
+
+                edit_window.protocol("WM_DELETE_WINDOW", cancel)
+
+                # Виджет кнопки для отмены изменений
+                cancel_button = Button(edit_window, text="Отмена", command=cancel)
+                cancel_button.pack(side="right", padx=20, pady=5)
+            else:
+                # Если клик в заголовке, окно не открывается
                 edit_window.destroy()
-                self.edit_window_open = False  # Сброс флага после закрытия окна редактирования (новых изменений нет)
-
-                # Разблокировка обработчика событий таблицы для дальнейшего редактирования
+                self.edit_window_open = False
                 self.data_table.bind("<Double-1>", self.on_double_click)
-                self.data_changed = True  # Устанавливаем флаг изменений данных - было произведено действие
-
-            # Виджет кнопки для применения изменений
-            save_button = Button(edit_window, text="Применить", command=save_value)
-            save_button.pack(side="left", padx=20, pady=5)
-
-            def cancel():
-                """
-                Отмена редактирования значения ячейки
-                """
-                edit_window.destroy()
-                self.edit_window_open = False  # Сброс флага после закрытия окна редактирования
-
-                # Разблокировка обработчика событий таблицы для дальнейшего редактирования
-                self.data_table.bind("<Double-1>", self.on_double_click)
-
-            edit_window.protocol("WM_DELETE_WINDOW", cancel)
-
-            # Виджет кнопки для отмены изменений
-            cancel_button = Button(edit_window, text="Отмена", command=cancel)
-            cancel_button.pack(side="right", padx=20, pady=5)
 
 
     def add_row(self):
@@ -264,6 +269,7 @@ class MarkingScreen(tk.Toplevel):
         """
         new_row = tuple("" for _ in range(len(self.data_table["columns"])))
         self.data_table.insert("", "end", values=new_row)
+        messagebox.showinfo("Информация", "Новая строка добавлена в конец датасета.")
         self.data_changed = True  # Устанавливаем флаг изменений данных - было произведено действие
 
 
@@ -274,6 +280,7 @@ class MarkingScreen(tk.Toplevel):
         selected_rows = self.data_table.selection()
         for row in selected_rows:
             self.data_table.delete(row)
+            messagebox.showinfo("Информация", "Данные успешно удалены.")
             self.data_changed = True  # Устанавливаем флаг изменений данных - было произведено действие
 
 
@@ -281,7 +288,7 @@ class MarkingScreen(tk.Toplevel):
         """
         Добавление нового столбца в таблицу
         """
-        new_column = simpledialog.askstring("Добавить столбец", "Введите название нового столбца:")
+        new_column = simpledialog.askstring("Столбец", "Введите название нового столбца:")
         if new_column:
             current_columns = [self.data_table.heading(col)["text"] for col in self.data_table["columns"]]
             self.data_table["columns"] += (new_column,)
@@ -290,6 +297,7 @@ class MarkingScreen(tk.Toplevel):
                 self.data_table.set(child, new_column, "")
             for col_name in current_columns:
                 self.data_table.heading(col_name, text=col_name)
+            messagebox.showinfo("Информация", "Новый столбец добавлен в датасет.")
             self.data_changed = True  # Устанавливаем флаг изменений данных - было произведено действие
 
 
@@ -297,16 +305,34 @@ class MarkingScreen(tk.Toplevel):
         """
         Удаление выбранного столбца из таблицы
         """
-        column_remove = simpledialog.askstring("Удалить столбец", "Введите название столбца, который хотите удалить:")
-        if column_remove and column_remove in self.data_table["columns"]:
-            column_index = self.data_table["columns"].index(column_remove)
-            self.data_table.heading(column_remove, text="")
-            columns = list(self.data_table["columns"])
-            columns.remove(column_remove)
-            self.data_table["columns"] = tuple(columns)
+        column_remove = simpledialog.askstring("Столбец", "Введите название столбца, который хотите удалить:")
+        if column_remove in self.data_table["columns"]:
+            # Создаем копию данных и списка столбцов
+            data_copy = {}
+            columns_copy = list(self.data_table["columns"])
+
             for child in self.data_table.get_children():
-                self.data_table.set(child, self.data_table["columns"][column_index], "")
+                values = self.data_table.item(child)["values"]
+                values_without_column = [value for idx, value in enumerate(values) if self.data_table["columns"][idx] != column_remove]
+                data_copy[child] = values_without_column
+
+            # Удаляем столбец из списка столбцов Treeview
+            columns_copy.remove(column_remove)
+            self.data_table["columns"] = tuple(columns_copy)
+            
+            # Обновляем таблицу с данными
+            self.data_table.delete(*self.data_table.get_children())
+            for child, values in data_copy.items():
+                self.data_table.insert("", "end", values=values)
+
+            # Восстанавливаем названия оставшихся столбцов
+            for col in columns_copy:
+                self.data_table.heading(col, text=col)
+
+            messagebox.showinfo("Информация", "Данные успешно удалены.")
             self.data_changed = True  # Устанавливаем флаг изменений данных - было произведено действие
+        else:
+            messagebox.showwarning("Ошибка", f"Столбец {column_remove} не найден.")
 
 
 if __name__ == "__main__":

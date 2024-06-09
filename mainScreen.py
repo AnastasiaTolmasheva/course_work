@@ -53,7 +53,7 @@ class MainScreen(tk.Tk):
         for i, (btn_text, btn_command) in enumerate(buttons):
             btn = ttk.Button(buttons_frame, text=btn_text, width=30, style="Main.TButton", command=btn_command)
             btn.pack(pady=5, padx=10, fill=tk.X)
-            if i < len(buttons) - 1:  # Добавляем стрелку между кнопками
+            if i < len(buttons) - 1:  # Стрелка между кнопками
                 arrow_label = ttk.Label(buttons_frame, text="↓", font=("Helvetica", 14))
                 arrow_label.pack()
 
@@ -103,7 +103,7 @@ class MainScreen(tk.Tk):
         help_text = """Приложение для поиска фиктивных аккаунтов. \nСоздатель: Толмачева А., КЭ-303
 
         - "Загрузить данные": вы можете загрузить таблицы csv формата.
-        - "Отредактировать данные": вы можете отредактировать и разметить загруженные данные.
+        - "Отредактировать данные": вы можете отредактировать загруженные данные.
         - "Найти фейки": вы можете настроить алгоритм нахождения фиктивных аккаунтов и запустить его.
         """
         messagebox.showinfo("Помощь", help_text)  # Показать окно с информацией

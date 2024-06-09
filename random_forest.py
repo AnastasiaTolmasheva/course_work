@@ -1,42 +1,42 @@
-import sqlite3
+
 import pandas as pd
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 import matplotlib.pyplot as plt
 from sklearn.manifold import TSNE
 import seaborn as sns
-import joblib
+import sqlite3
 import os
+import joblib
 
 
-def run_isolation_forest_algorithm(table_name, model_if, visualization, folder):
+def run_random_forest_algorithm(table_name, model_rf, visualization, folder):
     """
-    Алгоритм изоляционного леса для нахождения аномалий. Выбранная модель загружается для предсказаний,
-    производится рассчет метрик на основе заранее размеченных данных, 
-    найденные аккаунты выводятся в CSV файл, по желанию добавляется визуализация.
+    Алгоритм дерева решений для классификации. Создается и обучается модель, 
+    далее предсказываются метки на тестовых данных. Производится рассчет метрик на основе 
+    заранее размеченных данных, а также выводятся найденные аккаунты в CSV файл, 
+    по желанию добавляется визуализация.
 
     На входе:
     - table_name: название выбранной пользователем таблицы (датасета)
-    - model_if: имя модели изоляционного леса
+    - model_rf: имя модели случайного леса
     - visualization: строковое значение с необходимостью визуализации
     - folder: папка, в которую сохраняются результаты работы алгоритма
     """
 
     # Загрузка модели
-    model_path = os.path.join("models", model_if)
+    model_path = os.path.join("models", model_rf)
     model = joblib.load(model_path)
 
-    # Чтение данных для изоляционного леса из таблицы с признаками
+    # Чтение данных для дерева решений из таблицы с признаками
     connection = sqlite3.connect("app_database_features.db")
     query = f"SELECT * FROM {table_name};"
     data = pd.read_sql_query(query, connection, index_col="user_id")
     data_copy = data.copy()
-    data = data.drop(columns="is_fake")
+    X = data.drop(columns="is_fake")
+    y = data["is_fake"]
 
-    predictions = model.predict(data)
-
-    # Преобразование предсказаний к меткам is_fake (-1 = 1, 1 = 0)
-    pred_binary = (predictions == -1).astype(int)
-    data_copy["predictions"] = pred_binary
+    predictions = model.predict(X)
+    data_copy["predictions"] = predictions
 
     # Получение данных из таблицы о найденных фейках
     data_copy.reset_index(inplace=True)
@@ -56,10 +56,10 @@ def run_isolation_forest_algorithm(table_name, model_if, visualization, folder):
     connection.close() 
 
     # Вычисление метрик
-    accuracy = accuracy_score(data_copy["is_fake"], data_copy["predictions"])
-    precision = precision_score(data_copy["is_fake"], data_copy["predictions"], pos_label=1)
-    recall = recall_score(data_copy["is_fake"], data_copy["predictions"], pos_label=1)
-    f1 = f1_score(data_copy["is_fake"], data_copy["predictions"], pos_label=1)
+    accuracy = accuracy_score(y, predictions)
+    precision = precision_score(y, predictions, pos_label=1)
+    recall = recall_score(y, predictions, pos_label=1)
+    f1 = f1_score(y, predictions, pos_label=1)
     metrics_df = pd.DataFrame({"Метрики": ["Accuracy", "Precision", "Recall", "F1-score"],
                             "Значения": [accuracy, precision, recall, f1]})
 
@@ -77,8 +77,8 @@ def run_isolation_forest_algorithm(table_name, model_if, visualization, folder):
         data_copy["tsne2"] = X_tsne[:, 1]
 
         plt.figure(figsize=(10, 8))
-        sns.scatterplot(x='tsne1', y='tsne2', hue=pred_binary, data=data_copy, palette={0: 'green', 1: 'red'})
-        plt.title("Нахождение фейков с помощью изоляционного леса")
+        sns.scatterplot(x='tsne1', y='tsne2', hue=predictions, data=data_copy, palette={0: 'green', 1: 'red'})
+        plt.title("Нахождение фейков с помощью случайного леса")
         plt.xlabel("")
         plt.ylabel("")
         legend_labels = {'0': 'Норма', '1': 'Фейк'}
@@ -92,24 +92,6 @@ def run_isolation_forest_algorithm(table_name, model_if, visualization, folder):
         image_file_path = get_unique_filename(f"{model}_{table_name}", ".png", folder)
         plt.savefig(image_file_path, bbox_inches="tight")
         plt.show()
-
-
-        """
-        Второй вариант визуализации
-        plt.figure(figsize=(12, 8))
-        plt.scatter(X_test["time_difference"], X_test["numbers_in_name"], c=pred_binary, cmap="viridis")
-        plt.xlabel("Разница во времени регистрации и последнего входа")
-        plt.ylabel("Доля чисел в имени")
-        plt.title("Нахождение фейков с помощью изоляционного леса")
-        plt.colorbar()
-        metrics_text = f'Accuracy: {accuracy:.2f}\nPrecision: {precision:.2f}\nRecall: {recall:.2f}\nF1-score: {f1:.2f}'
-        plt.text(0.5, 0.8, metrics_text, horizontalalignment='center', verticalalignment='center', 
-                transform=plt.gca().transAxes, fontsize=12, 
-                bbox=dict(facecolor='white', alpha=0.5))
-        image_file_path = get_unique_filename(f'isolation_forest_{table_name}_test_{test_dataset_fraction}', '.png', folder)
-        plt.savefig(image_file_path)
-        plt.show()
-        """
 
 
 def get_unique_filename(name, extension, folder):
